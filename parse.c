@@ -3,12 +3,19 @@
 
 int readFile(char *dir){
     FILE *file = fopen(dir,"r");
+    char buffer[255];
     if(file == NULL){
         printf("DEBUG: File Not Found\n");
         return 0;
     }
-    else
-        printf("DEBUG: File Found\n");
+    printf("%s", file);
+
+    fgets(buffer, 255, (FILE*)file);
+    printf("%s", buffer);
+
+    fgets(buffer, 255, (FILE*)file);
+    printf("%s", buffer);
+
     fclose(file);
 }
 

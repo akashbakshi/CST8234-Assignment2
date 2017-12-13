@@ -12,5 +12,5 @@ int main( int argc, char *argv[] ){
 
 
     /*testing file io, outputing to file*/
-    outputFile("CST8234.out");
+    createOutputFile("CST8234.out");
 }
