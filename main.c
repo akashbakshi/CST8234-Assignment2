@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "types.h"
 #include "globals.h"
+#include "parse.h"
 
 int main( int argc, char *argv[] ){
 
@@ -13,4 +14,8 @@ int main( int argc, char *argv[] ){
 
     /*testing file io, outputing to file*/
     createOutputFile("CST8234.out");
+
+    if ( ! parseArguments( argc, argv ) )
+        exit( EXIT_FAILURE );
+
 }
