@@ -1,7 +1,17 @@
 
 #include <stdio.h>
+#include "parse.h"
+
+extern int parseArguments( int argc, char *argv[], char *courseCode, char *uName, long *timeStamp){
+
+}
+
 
 int readFile(char *dir){
+
+	char *courseCode[8],*uName[9]; /* temp vars, need to be moved to parse function later */
+	long *timeStamp;
+
     FILE *file = fopen(dir,"r");
     char buffer[255];
     if(file == NULL){
@@ -10,11 +20,17 @@ int readFile(char *dir){
     }
     printf("%s", file);
 
-    fgets(buffer, 255, (FILE*)file);
-    printf("%s", buffer);
+/*    while (file != EOF){
+    	fscanf(file, "%8[^,]", courseCode);
+    	fscanf(file, "%9[^,]", uName);
+    	fscanf(file, "%ld", &timeStamp);
+    	printf("Course code: %s, Username: %s, Timestamp: %ld\n", courseCode, uName, timeStamp);
+    }*/
 
-    fgets(buffer, 255, (FILE*)file);
-    printf("%s", buffer);
+
+    while (fscanf(file, "%[^,], %[^,], %ld", courseCode, uName, &timeStamp) != EOF){
+    	printf("Course code: %s, Username: %s, Timestamp: %ld\n", courseCode, uName, timeStamp);
+    }
 
     fclose(file);
 }
