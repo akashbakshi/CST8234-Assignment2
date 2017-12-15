@@ -9,7 +9,7 @@ int main( int argc, char *argv[] ){
 
     printf("\nTesting Parser\n%d",argc);
     /*testing file io, valid dir*/
-    readFile("reg-20171203.in");
+    
 
 
 

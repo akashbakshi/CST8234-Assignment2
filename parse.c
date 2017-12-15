@@ -32,19 +32,14 @@ int parseArguments( int argc, char *argv[]){ /* function breaks if a file is spe
 				printHelp();
 				exit(1);
 			} else if (strcmp(argv[i], "--append") == 0){
-				readType = 'a';
+				readType = "a";
 			} else {
 				fileName = argv[1];
 			}
 		}
-		FILE *file = fopen(fileName,readType);
-		
 		printf("\n%s\n", fileName);
-	    while (fscanf(file, "%[^,], %[^,], %ld ", courseCode, uName, &timeStamp) != EOF){
-	    	printf("Course code: %s, Username: %s, Timestamp: %ld", courseCode, uName, timeStamp);
-	    	printf("\n");
-	    }
-		fclose(file);
+		readFile(fileName);
+	   
 }
 
 
@@ -58,14 +53,14 @@ int readFile(char *dir){
         printf("DEBUG: File Not Found\n");
         return 0;
     }
-	/*
+	
     printf("%s", file);
 
     while (fscanf(file, "%[^,], %[^,], %ld ", courseCode, uName, &timeStamp) != EOF){
     	printf("Course code: %s Username: %s Timestamp: %ld", courseCode, uName, timeStamp);
     	printf("\n");
     }
-*/
+
     fclose(file);
 	return 0;
 }
