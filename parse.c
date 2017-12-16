@@ -33,6 +33,7 @@ int parseArguments( int argc, char *argv[]){ /* function breaks if a file is spe
 				exit(1);
 			} else if (strcmp(argv[i], "--append") == 0){
 				readType = "a";
+				
 			} else {
 				fileName = argv[1];
 			}
@@ -65,8 +66,8 @@ int readFile(char *dir){
 	return 0;
 }
 
-int createOutputFile(char *dir){
-    FILE *file = fopen(dir,"w");
+int createOutputFile(char *dir,char *type){
+    FILE *file = fopen(dir,type);
 
     if(file == NULL){
         printf("DEBUG: File Not Found Creating one\n");
