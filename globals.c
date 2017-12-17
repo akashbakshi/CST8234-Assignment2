@@ -5,6 +5,3 @@
 #include <stdio.h>
 
 Course *g_courses = NULL;
-
-extern int readFile(char *dir);
-extern int createOutputFile(char *dir);

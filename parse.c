@@ -1,5 +1,7 @@
 
 #include <stdio.h>
+#include "types.h"
+#include "globals.h"
 #include "parse.h"
 
 void printHelp(){
@@ -21,7 +23,6 @@ int parseArguments( int argc, char *argv[]){ /* function breaks if a file is spe
 
 	char *courseCode[8],*uName[9]; /* temp vars, may need to be moved to parse function later */
 	long *timeStamp;
-
 		if (argc == 1){
 			printHelp();
 			exit(0);
@@ -43,12 +44,24 @@ int parseArguments( int argc, char *argv[]){ /* function breaks if a file is spe
 	   
 }
 
+int doesCourseExists(char *name){
+	int exists = 0;
+
+	if(strcmp(g_courses->code,name) == 0)
+		exists ++;
+
+	return exists;
+}
 
 int readFile(char *dir){
 
 	char *courseCode[8],*uName[9]; /* temp vars, need to be moved to parse function later */
 	long *timeStamp;
-
+	int i = 0;
+	
+	Course *g_courses = malloc(sizeof(Course));
+	g_courses->registrations = malloc(sizeof(Registration));
+	
     FILE *file = fopen(dir,"r");
     if(file == NULL){
         printf("DEBUG: File Not Found\n");
@@ -58,9 +71,13 @@ int readFile(char *dir){
     printf("%s", file);
 
     while (fscanf(file, "%[^,], %[^,], %ld ", courseCode, uName, &timeStamp) != EOF){
-    	printf("Course code: %s Username: %s Timestamp: %ld", courseCode, uName, timeStamp);
+		strcpy(g_courses->code,courseCode);
+		strcpy(g_courses->registrations->studentID,uName);
+		g_courses->registrations->timestamp = timeStamp;
+    	printf("Course code: %s Username: %s Timestamp: %ld", g_courses->code, g_courses->registrations->studentID, g_courses->registrations->timestamp);
     	printf("\n");
-    }
+		i++;
+  }
 
     fclose(file);
 	return 0;
