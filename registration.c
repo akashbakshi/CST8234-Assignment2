@@ -9,7 +9,8 @@
 int storeValuesToStruct(char *courseCode,char *userID,long ts,int newSize){
     	int i;
 		if(newSize == 0){
-			g_courses = realloc(g_courses,sizeof(Course)*(newSize+1));
+			/* if it's the first element create it normally */
+				g_courses = realloc(g_courses,sizeof(Course)*(newSize+1));
 				strcpy(g_courses[newSize].code,courseCode);
 					
 				g_courses[newSize].registrations = malloc(sizeof(Registration));
@@ -17,8 +18,10 @@ int storeValuesToStruct(char *courseCode,char *userID,long ts,int newSize){
 				g_courses[newSize].registrations[0].timestamp = ts;
 		}
 		else{
+			/* if it's not iterate through all the previous elements to check for duplicates */
 			for(i = 0;i<newSize;i++){
 				if(strcmp(g_courses[i].code,courseCode) == 0){
+					/* if we found a duplicate, realloc registration +1 */
 					size_t size = (sizeof(g_courses[i].registrations)/sizeof(g_courses[i].registrations[0]))+1;
 					printf("size: %d",size);
 					g_courses[i].registrations = realloc(g_courses[i].registrations,size);
@@ -26,6 +29,7 @@ int storeValuesToStruct(char *courseCode,char *userID,long ts,int newSize){
 					g_courses[i].registrations[size].timestamp = ts;
 				}
 				else{
+					/* if we didn't find duplicates then continue creating it normalling */
 					g_courses = realloc(g_courses,sizeof(Course)*(newSize+1));
 					strcpy(g_courses[newSize].code,courseCode);
 						
