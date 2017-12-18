@@ -7,11 +7,15 @@ int storeValuesToStruct(char *courseCode,char *userID,long ts,int newSize,Course
     	
 		course = realloc(g_courses,sizeof(Course)*(newSize+1));
 		strcpy(course[newSize].code,courseCode);
-
+		course[newSize].registrations = malloc(sizeof(Registration));
+		strcpy(course[newSize].registrations[0].studentID,userID);
+		course[newSize].registrations[0].timestamp = ts;
 		test(course,newSize);
 }
 
 int test(Course *course,int num){
 	
-	printf("out of touch: %s\n",course[num].code);
+	printf("course code: %s\n",course[num].code);
+	printf("registration sID: %s\n",course[num].registrations[0].studentID);
+	printf("registration TS: %ld\n",course[num].registrations[0].timestamp);
 }
