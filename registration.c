@@ -5,6 +5,7 @@
 
 
 
+#define NUM_ELEM(x) (sizeof (x) / sizeof (*(x)))
 
 int storeValuesToStruct(char *courseCode,char *userID,long ts,int newSize){
     	int i;
@@ -22,11 +23,12 @@ int storeValuesToStruct(char *courseCode,char *userID,long ts,int newSize){
 			for(i = 0;i<newSize;i++){
 				if(strcmp(g_courses[i].code,courseCode) == 0){
 					/* if we found a duplicate, realloc registration +1 */
-					size_t size = (sizeof(g_courses[i].registrations)/sizeof(g_courses[i].registrations[0]))+1;
-					printf("size: %d",size);
-					g_courses[i].registrations = realloc(g_courses[i].registrations,size);
+					int size = NUM_ELEM(g_courses[i].registrations)+1;
+					printf("size: %ld",g_courses[i].registrations[0].timestamp);
+					g_courses[i].registrations = realloc(g_courses[i].registrations,(size+1));
 					strcpy(g_courses[i].registrations[size].studentID,userID);
 					g_courses[i].registrations[size].timestamp = ts;
+					test(g_courses,newSize);
 				}
 				else{
 					/* if we didn't find duplicates then continue creating it normalling */
@@ -43,7 +45,7 @@ int storeValuesToStruct(char *courseCode,char *userID,long ts,int newSize){
 
 int test(Course *course,int num){
 	
-	int size = (sizeof(g_courses[num].registrations)/sizeof(Registration));
+	int size = (sizeof(g_courses[num].registrations)/sizeof(g_courses[num].registrations[0]));
 	
 	if(size == 1){
 
