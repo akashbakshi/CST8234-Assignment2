@@ -72,10 +72,9 @@ int readFile(char *dir){
 		storeValuesToStruct(courseCode,uName,timeStamp,i,&g_courses);
 		i++;
   }
-
     fclose(file);
-	printf("out of touch: %s",g_courses[0].code);
-
+	
+	
 	return 0;
 }
 
