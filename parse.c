@@ -52,6 +52,10 @@ int doesCourseExists(char *name){
 
 	return exists;
 }
+int storeValuesToStruct(char *courseCode,char *userID,long ts,int newSize){
+    	printf("geyy:%s ",courseCode);
+	
+}
 
 int readFile(char *dir){
 
@@ -71,18 +75,22 @@ int readFile(char *dir){
     printf("%s", file);
 
     while (fscanf(file, "%[^,], %[^,], %ld ", courseCode, uName, &timeStamp) != EOF){
+		printf("hiii:%s ",courseCode);
+		
 		strcpy(g_courses->code,courseCode);
-		strcpy(g_courses->registrations->studentID,uName);
-		g_courses->registrations->timestamp = timeStamp;
-    	printf("Course code: %s Username: %s Timestamp: %ld", g_courses->code, g_courses->registrations->studentID, g_courses->registrations->timestamp);
-    	printf("\n");
+		storeValuesToStruct(&courseCode,uName,timeStamp,i);
 		i++;
   }
 
     fclose(file);
+	printf("out of touch: %s",g_courses[0].code);
+
 	return 0;
 }
-
+int printCourses(int num){
+	for(int i =0;i<num;i++){
+	}
+}
 int createOutputFile(char *dir,char *type){
     FILE *file = fopen(dir,type);
 
