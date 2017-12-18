@@ -44,14 +44,6 @@ int parseArguments( int argc, char *argv[]){ /* function breaks if a file is spe
 	   
 }
 
-int doesCourseExists(char *name){
-	int exists = 0;
-
-	if(strcmp(g_courses->code,name) == 0)
-		exists ++;
-
-	return exists;
-}
 
 int readFile(char *dir){
 
@@ -69,7 +61,7 @@ int readFile(char *dir){
     printf("%s", file);
 
     while (fscanf(file, "%[^,], %[^,], %ld ", courseCode, uName, &timeStamp) != EOF){
-		storeValuesToStruct(courseCode,uName,timeStamp,i,&g_courses);
+		storeValuesToStruct(courseCode,uName,timeStamp,i);
 		i++;
   }
     fclose(file);
