@@ -52,10 +52,6 @@ int doesCourseExists(char *name){
 
 	return exists;
 }
-int storeValuesToStruct(char *courseCode,char *userID,long ts,int newSize){
-    	printf("geyy:%s ",courseCode);
-	
-}
 
 int readFile(char *dir){
 
@@ -63,8 +59,6 @@ int readFile(char *dir){
 	long *timeStamp;
 	int i = 0;
 	
-	Course *g_courses = malloc(sizeof(Course));
-	g_courses->registrations = malloc(sizeof(Registration));
 	
     FILE *file = fopen(dir,"r");
     if(file == NULL){
@@ -75,10 +69,7 @@ int readFile(char *dir){
     printf("%s", file);
 
     while (fscanf(file, "%[^,], %[^,], %ld ", courseCode, uName, &timeStamp) != EOF){
-		printf("hiii:%s ",courseCode);
-		
-		strcpy(g_courses->code,courseCode);
-		storeValuesToStruct(&courseCode,uName,timeStamp,i);
+		storeValuesToStruct(courseCode,uName,timeStamp,i,&g_courses);
 		i++;
   }
 
@@ -87,10 +78,7 @@ int readFile(char *dir){
 
 	return 0;
 }
-int printCourses(int num){
-	for(int i =0;i<num;i++){
-	}
-}
+
 int createOutputFile(char *dir,char *type){
     FILE *file = fopen(dir,type);
 
