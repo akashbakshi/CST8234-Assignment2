@@ -10,7 +10,20 @@ int storeValuesToStruct(char *courseCode,char *userID,long ts,int newSize,Course
 		course[newSize].registrations = malloc(sizeof(Registration));
 		strcpy(course[newSize].registrations[0].studentID,userID);
 		course[newSize].registrations[0].timestamp = ts;
+		if(doesCourseExists(course,courseCode,newSize)>0){
+			printf("exists");
+		}
 		test(course,newSize);
+}
+
+int doesCourseExist(Course *course,char *codeToCheck,int num){
+	int exists = 0;
+
+	for(int i =0;i<num;i++){
+		if(strcmp(course[num].code,codeToCheck) == 0)
+			exists = 1;
+	}
+	return exists;
 }
 
 int test(Course *course,int num){
