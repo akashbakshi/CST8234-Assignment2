@@ -65,16 +65,8 @@ int readFile(char *dir,char *type){
   		/*filterOutDuplicates(g_courses,i);*/
 		i++;
   	}
-    fclose(file);
-
-	if(type == "w")
-		createOutputFile("a",i);
-	else if(type == "a"){
-		int j;
-		for(j = 0;j<i;j++)
-			appendToFile(g_courses[j].code,j);
-	}
 	
+    fclose(file);
 	return 0;
 }
 int appendToFile(char *dir,int index){
