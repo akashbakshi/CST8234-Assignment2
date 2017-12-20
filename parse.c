@@ -67,17 +67,12 @@ int readFile(char *dir,char *type){
   	}
     fclose(file);
 
-	if(type == "w")
-		createOutputFile("a",i);
-	else if(type == "a"){
-		int j;
-		for(j = 0;j<i;j++)
-			appendToFile(g_courses[j].code,j);
-	}
+
+	writeToFile(type, g_courses, i);
 	
 	return 0;
 }
-int appendToFile(char *dir,int index){
+/*int appendToFile(char *dir,int index){
 		FILE *file = fopen(dir,"a");
 
 		if(file == NULL){
@@ -93,10 +88,29 @@ int appendToFile(char *dir,int index){
 		fclose(file);
 	
 	
-}
-int createOutputFile(char *type,int num){
-	
-	
- 
+}*/
+int writeToFile(char *type, Course *dir,int index){
+
+		int i, j;
+		FILE *file;
+
+		printf("LOL %s TYPE %s\n", dir[0].code, type);
+
+		if(file == NULL){
+			printf("DEBUG: File Not Found Creating one\n");
+			return 0;
+		}
+		else
+			{
+				printf("Ready to append to file");
+				for (i = 0; i < index; i++){
+					printf("%d\n", i);
+					for (j = 0; j < i; j++){
+						file = fopen(dir[i].code, type);
+						fprintf(file,"%s:%ld\n",dir[i].registrations[j].studentID, dir[i].registrations[j].timestamp);
+					}
+				}
+			}
+		fclose(file);
 }
 
