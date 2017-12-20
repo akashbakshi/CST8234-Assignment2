@@ -135,7 +135,7 @@ int test(Course *course,int num){
 	int j = 0;
 	for(i = 0;i<num;i++){
 
-		int size = getSizeOfReg(num);
+		int size = getSizeOfReg(i);
 		printf("course code: %s\n",course[i].code);
 		for(j = 0;j<size;j++)
 			printf("registration sID: %s\n",course[i].registrations[j].studentID);
