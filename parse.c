@@ -34,18 +34,17 @@ int parseArguments( int argc, char *argv[]){ /* function breaks if a file is spe
 				exit(1);
 			} else if (strcmp(argv[i], "--append") == 0){
 				readType = "a";
-				
+				fileName = argv[i+1];
 			} else {
-				fileName = argv[1];
 			}
 		}
 		printf("\n%s\n", fileName);
-		readFile(fileName);
-	   
+		readFile(fileName,readType);
+	   	
 }
 
 
-int readFile(char *dir){
+int readFile(char *dir,char *type){
 
 	char *courseCode[8],*uName[9]; /* temp vars, need to be moved to parse function later */
 	long *timeStamp;
@@ -67,21 +66,37 @@ int readFile(char *dir){
 		i++;
   	}
     fclose(file);
-	
+
+	if(type == "w")
+		createOutputFile("a",i);
+	else if(type == "a"){
+		int j;
+		for(j = 0;j<i;j++)
+			appendToFile(g_courses[j].code,j);
+	}
 	
 	return 0;
 }
+int appendToFile(char *dir,int index){
+		FILE *file = fopen(dir,"a");
 
-int createOutputFile(char *dir,char *type){
-    FILE *file = fopen(dir,type);
-
-    if(file == NULL){
-        printf("DEBUG: File Not Found Creating one\n");
-        return 0;
-    }
-    else
-        printf("DEBUG: File Found Overwriting\n");
-        
-    fclose(file);
+		if(file == NULL){
+			printf("DEBUG: File Not Found Creating one\n");
+			return 0;
+		}
+		else
+			{
+				printf("hey");
+				fprintf(file,"%s:%ld\n",g_courses[index].registrations[0].studentID,g_courses[index].registrations[0].timestamp);
+			}
+			
+		fclose(file);
+	
+	
+}
+int createOutputFile(char *type,int num){
+	
+	
+ 
 }
 
