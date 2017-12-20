@@ -3,26 +3,45 @@
 #include "globals.h"
 #include "parse.h"
 
-
-
 int storeValuesToStruct(char *courseCode,char *userID,long ts,int newSize){
-	/* if it's the first element create it normally */
-	g_courses = malloc(sizeof(Course)*(newSize+1));
+
+	int i = 0;
+
+	g_courses = realloc(g_courses, sizeof(Course)*(newSize+1));
 	strcpy(g_courses[newSize].code,courseCode);
-					
-	g_courses[newSize].registrations = malloc(sizeof(Registration));
-	strcpy(g_courses[newSize].registrations[0].studentID,userID);
-	g_courses[newSize].registrations[0].timestamp = ts;
-		
+	g_courses[newSize+1].code[0] = '\n';
+
+	if (g_courses[newSize].registrations == NULL){
+		g_courses[newSize].registrations = calloc(1, sizeof(Registration)+1);
+		g_courses[newSize].registrations[0].studentID[0] = '\n';
+		printf("New reg allocated\n");
+	}
+	g_courses[newSize].registrations = realloc(g_courses[0].registrations, sizeof(Registration)+1);
+
+	do {
+		printf("Trying to register\n");
+		if (g_courses[newSize].registrations[i].studentID[0] == '\n'){
+			printf("Registering\n");
+			strcpy(g_courses[newSize].registrations[i].studentID,userID);
+			g_courses[newSize].registrations[i].timestamp = ts;
+			g_courses[newSize].registrations[i+1].studentID[0] = '\n';
+			printf("Added\n");
+		}
+		i++;
+	} while (g_courses[newSize].registrations[i].studentID[0] != '\n');
+
 	test(g_courses,newSize);
 }
 int findNumOfDuplicates(Course *course, int size){
-	/* Used to get the number of duplicates */
+
+	int i;
+	int j;
+
 	int offset = 1;
 	int numOfDup = 0;
 	while(numOfDup == 0 && offset != size){
-		for(int i =0;i<offset;i++){
-			for(int j = 0;j<size;j++){
+		for(i =0;i<offset;i++){
+			for(j = 0;j<size;j++){
 				if(strcmp(course[i].code,course[j].code)==0)
 					numOfDup++;
 			}
@@ -32,14 +51,14 @@ int findNumOfDuplicates(Course *course, int size){
 	return numOfDup;
 }
 int filterOutDuplicates(Course *course,int size){
-	/* Used to remove all duplicates */
+
 	int counter = 1;
 	int i =0;
 	int offset = 0;
 	printf("%d",size);
 
 	int duplicates = findNumOfDuplicates(course,size);
-	
+
 	while(duplicates != 0 && offset != size){
 		char *courseName = course[offset].code;
 		for(i = 0;i<size;i++){
@@ -54,13 +73,19 @@ int filterOutDuplicates(Course *course,int size){
 		counter = 1;
 		duplicates = findNumOfDuplicates(course,size);
 	}
-
 }
 int test(Course *course,int num){
-	
+	int i = 0;
+	int j = 0;
 
-	printf("course code: %s\n",course[num].code);
-	printf("registration sID: %s\n",course[num].registrations[0].studentID);
-	printf("registration TS: %ld\n",course[num].registrations[0].timestamp);
-	
+	while (g_courses[i].code[0] != '\n'){
+		printf("course code: %s\n",course[i].code);
+		while (g_courses[i].registrations[j].studentID[0] != '\n'){
+			printf("registration sID: %s\n",course[i].registrations[j].studentID);
+			printf("registration TS: %ld\n",course[i].registrations[j].timestamp);
+			j++;
+		}
+		i++;
+	}
+	return 1;
 }

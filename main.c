@@ -11,7 +11,8 @@ int main( int argc, char *argv[] ){
     /*testing file io, valid dir*/
     
 
-
+    g_courses = calloc(1, sizeof(Course)+1);
+    g_courses[0].code[0] = '\n';
 
     if ( ! parseArguments( argc, argv) )
         exit(0);

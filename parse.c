@@ -63,7 +63,7 @@ int readFile(char *dir){
     while (fscanf(file, "%[^,], %[^,], %ld ", courseCode, uName, &timeStamp) != EOF){
 		storeValuesToStruct(courseCode,uName,timeStamp,i);
 		
-  		filterOutDuplicates(g_courses,i);
+  		/*filterOutDuplicates(g_courses,i);*/
 		i++;
   	}
     fclose(file);
