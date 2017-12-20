@@ -5,9 +5,20 @@
 
 int storeValuesToStruct(char *courseCode,char *userID,long ts,int newSize){
 
+	g_courses = realloc(g_courses,sizeof(Course)*(newSize+1));
+	strcpy(g_courses[newSize].code,courseCode);
+
+	g_courses[newSize].registrations = malloc(sizeof(Registration)*1);
+	strcpy(g_courses[newSize].registrations[0].studentID,userID);
+	g_courses[newSize].registrations[0].timestamp = ts;
+	test(g_courses,newSize);
+}
+
+int prev(char *courseCode,char *userID,long ts,int newSize){
+/*
 	int i = 0;
 
-	g_courses = realloc(g_courses, sizeof(Course)*(newSize+1));
+		g_courses = realloc(g_courses, sizeof(Course)*(newSize+1));
 	strcpy(g_courses[newSize].code,courseCode);
 	g_courses[newSize+1].code[0] = '\n';
 
@@ -29,8 +40,7 @@ int storeValuesToStruct(char *courseCode,char *userID,long ts,int newSize){
 		}
 		i++;
 	} while (g_courses[newSize].registrations[i].studentID[0] != '\n');
-
-	test(g_courses,newSize);
+	*/
 }
 int findNumOfDuplicates(Course *course, int size){
 
@@ -59,7 +69,7 @@ int filterOutDuplicates(Course *course,int size){
 
 	int duplicates = findNumOfDuplicates(course,size);
 
-	while(duplicates != 0 && offset != size){
+	while(duplicates == 0 && offset != size){
 		char *courseName = course[offset].code;
 		for(i = 0;i<size;i++){
 			if(strcmp(course[i].code,courseName)==0){
@@ -78,14 +88,11 @@ int test(Course *course,int num){
 	int i = 0;
 	int j = 0;
 
-	while (g_courses[i].code[0] != '\n'){
+	for(i = 0;i<num;i++){
 		printf("course code: %s\n",course[i].code);
-		while (g_courses[i].registrations[j].studentID[0] != '\n'){
-			printf("registration sID: %s\n",course[i].registrations[j].studentID);
-			printf("registration TS: %ld\n",course[i].registrations[j].timestamp);
-			j++;
-		}
-		i++;
+		printf("registration sID: %s\n",course[i].registrations[0].studentID);
+		printf("registration TS: %ld\n",course[i].registrations[0].timestamp);
+	
 	}
 	return 1;
 }
