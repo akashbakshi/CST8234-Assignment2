@@ -13,91 +13,89 @@ void printHelp(){
 	printf("\t\tFile name(s) to be read.\n");
 }
 
+/*
+ * parses command line arguments
+ */
 int parseArguments( int argc, char *argv[]){
 
-	int i;
-	
-		
-	char *readType = "r";
+	int i, j;
+
+	char *readType = "w";
 	char *fileName;
 
-	char *courseCode[8],*uName[9]; /* temp vars, may need to be moved to parse function later */
+	char *courseCode[8],*uName[9];
 	long *timeStamp;
-		if (argc == 1){
-			printHelp();
-			exit(0);
-		}
+	if (argc == 1){  /*If nothing is entered, print help and smokebomb out of here*/
+		printHelp();
+		exit(0);
+	}
 
-		for (i = 0; i < argc; i++){
-			if (strcmp(argv[i], "--help") == 0){
-				printHelp();
-				exit(1);
-			} else if (strcmp(argv[i], "--append") == 0){
-				readType = "a";
-				fileName = argv[i+1];
-			} else {
-			}
+	for (i = 0; i < argc; i++){
+		if (strcmp(argv[i], "--help") == 0){
+			printHelp();
+			exit(1);
+		} else if (strcmp(argv[i], "--append") == 0){
+			readType = "a";
+			break;
 		}
-		printf("\n%s\n", fileName);
+	}
+	for (j = i+1; j < argc; j++){  /*Iterates through remaining variables (if any)*/
+		fileName = argv[j];
 		readFile(fileName,readType);
-	   	
+	}
+
 }
 
-
+/*
+ * Reads data from file and passes to struct handler function
+ */
 int readFile(char *dir,char *type){
 
-	char *courseCode[8],*uName[9]; /* temp vars, need to be moved to parse function later */
+	char *courseCode[8],*uName[9];
 	long *timeStamp;
 	int i = 0;
-	
-	
-    FILE *file = fopen(dir,"r");
-    if(file == NULL){
-        printf("DEBUG: File Not Found\n");
-        return 0;
-    }
-	
-    printf("%s", file);
 
-    while (fscanf(file, "%[^,], %[^,], %ld ", courseCode, uName, &timeStamp) != EOF){
+	FILE *file = fopen(dir,"r");
+	if(file == NULL){
+		printf("DEBUG: File Not Found\n");
+		return 0;
+	}
+
+	printf("%s", file);
+
+	while (fscanf(file, "%7[^,], %8[^,], %13ld ", courseCode, uName, &timeStamp) == 3){
 		storeValuesToStruct(courseCode,uName,timeStamp,i);
-		
-  		/*filterOutDuplicates(g_courses,i);*/
 		i++;
-  	}
-    fclose(file);
-
+	}
+	fclose(file);
 
 	writeToFile(type, g_courses, i);
-	
-   
+
 	return 0;
 }
 
+/*
+ * Writes data data to file using a copy of the g_courses struct, the type of file operation it will be using, and an int to help find how many total courses there are
+ */
 int writeToFile(char *type, Course *dir,int index){
 
-		int i, j;
-		FILE *file;
+	int i, j;
+	FILE *file;
 
-		printf("LOL %s TYPE %s\n", dir[0].code, type);
-		int courseNum = getSizeOfCourses(index);
-		if(file == NULL){
-			printf("DEBUG: File Not Found Creating one\n");
-			return 0;
-		}
-		else
-			{
-				printf("Ready to append to file");
-				for (i = 0; i < courseNum; i++){
-					int size = getSizeOfReg(i);
-					printf("%d\n", size);
-					for (j = 0; j < size; j++){
-						file = fopen(dir[i].code, type);
-						fprintf(file,"%s:%ld\n",dir[i].registrations[j].studentID, dir[i].registrations[j].timestamp);
-						printf("%s:%ld\n",dir[i].registrations[j].studentID, dir[i].registrations[j].timestamp);
-					}
-				}
+	int courseNum = getSizeOfCourses(index);  /*Finds size of the final courses struct for printing purposes*/
+	if(file == NULL){
+		printf("DEBUG: File Not Found Creating one\n");
+		return 0;
+	}
+	else{
+		for (i = 0; i < courseNum; i++){
+			file = fopen(dir[i].code, type);
+			int size = getSizeOfReg(i);  /*Finds size of the final registration struct per courses struct*/
+			for (j = 0; j < size; j++){
+				fprintf(file,"%s:%ld\n",dir[i].registrations[j].studentID, dir[i].registrations[j].timestamp);
 			}
-		fclose(file);
+		}
+	}
+	fclose(file);
 }
 
