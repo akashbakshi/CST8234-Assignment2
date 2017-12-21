@@ -96,7 +96,7 @@ int writeToFile(char *type, Course *dir,int index){
 		FILE *file;
 
 		printf("LOL %s TYPE %s\n", dir[0].code, type);
-
+		int courseNum = getSizeOfCourses(index);
 		if(file == NULL){
 			printf("DEBUG: File Not Found Creating one\n");
 			return 0;
@@ -104,7 +104,7 @@ int writeToFile(char *type, Course *dir,int index){
 		else
 			{
 				printf("Ready to append to file");
-				for (i = 0; i < index; i++){
+				for (i = 0; i < courseNum; i++){
 					int size = getSizeOfReg(i);
 					printf("%d\n", i);
 					for (j = 0; j < size; j++){

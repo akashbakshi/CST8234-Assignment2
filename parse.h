@@ -5,3 +5,4 @@ extern int createOutputFile(char *type,int num);
 
 extern int storeValuesToStruct(char *courseCode,char *userID,long ts,int newSize);
 extern int getSizeOfReg(int index);
+extern int getSizeOfCourses(int index);

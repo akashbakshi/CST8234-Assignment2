@@ -15,6 +15,15 @@ int storeValuesToStruct(char *courseCode,char *userID,long ts,int newSize){
 	test(g_courses,newSize);
 }
 */
+int getSizeOfCourses(int index){
+	int g = 0;
+	do{
+		g++;
+	}while(strcmp(g_courses[g].code,"ForkC") != 0);
+
+	return g;
+}
+
 int getSizeOfReg(int index){
 	int g = 0;
 	do{
@@ -24,37 +33,48 @@ int getSizeOfReg(int index){
 	return g;
 }
 int storeValuesToStruct(char *courseCode,char *userID,long ts,int newSize){
+
 	if(newSize == 0){
-		g_courses = realloc(g_courses,sizeof(Course)*(newSize+1));
+		g_courses = realloc(g_courses,sizeof(Course)*(newSize+2));
 		strcpy(g_courses[newSize].code,courseCode);
 
 		g_courses[newSize].registrations = malloc(sizeof(Registration)*2);
 		strcpy(g_courses[newSize].registrations[0].studentID,userID);
 		g_courses[newSize].registrations[0].timestamp = ts;
 		strcpy(g_courses[newSize].registrations[1].studentID,"ScrewC");
+		strcpy(g_courses[newSize+1].code,"ForkC");
+		printf("should i stay or should i go\n");
 	}else{
 		/*if we already have more than one in the structure*/
-		int g = 0;
 		
-		for(int i =0;i<newSize;i++){
-			if(strcmp(courseCode,g_courses[i].code)==0){
-				//printf("%d %s",i,g_courses[0].registrations[1].studentID);
+		int size = getSizeOfCourses(newSize);
+		for(int i =0;i<size;i++){
+			printf("gg %d\n",size);
+			if(strcmp(g_courses[i].code,courseCode)!=0){
+				
+				printf("struct %s: temp %s\n",g_courses[i].code,courseCode);
+			
+				g_courses = realloc(g_courses,sizeof(Course)*(size+2));
+				strcpy(g_courses[size].code,courseCode);
+
+				g_courses[size].registrations = malloc(sizeof(Registration)*2);
+				strcpy(g_courses[size].registrations[0].studentID,userID);
+				g_courses[size].registrations[0].timestamp = ts;
+				strcpy(g_courses[size].registrations[1].studentID,"ScrewC");
+				strcpy(g_courses[size+1].code,"ForkC");
+				///
+			
+			}else if(strcmp(g_courses[i].code,courseCode)==0){
 				int size = getSizeOfReg(i);
-				printf("size:%d\n",size);
+				
+				printf(" duplicate struct %s: temp %s\n",g_courses[i].code,courseCode);
 				g_courses[i].registrations = realloc(g_courses[i].registrations,sizeof(Registration)*(size+2));
 				strcpy(g_courses[i].registrations[size].studentID,userID);
 				g_courses[i].registrations[size].timestamp = ts;
 				size++;
 				strcpy(g_courses[i].registrations[size].studentID,"ScrewC");
-			}else{
-				g_courses = realloc(g_courses,sizeof(Course)*(newSize+2));
-				strcpy(g_courses[newSize].code,courseCode);
-
-				g_courses[newSize].registrations = malloc(sizeof(Registration)*2);
-				strcpy(g_courses[newSize].registrations[0].studentID,userID);
-				g_courses[newSize].registrations[0].timestamp = ts;
-				strcpy(g_courses[newSize].registrations[1].studentID,"ScrewC");
 			}
+			printf("\n\n");
 		}
 	}	
 }
