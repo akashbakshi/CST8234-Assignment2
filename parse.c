@@ -13,7 +13,7 @@ void printHelp(){
 	printf("\t\tFile name(s) to be read.\n");
 }
 
-int parseArguments( int argc, char *argv[]){ /* function breaks if a file is specified */
+int parseArguments( int argc, char *argv[]){
 
 	int i;
 	
@@ -73,23 +73,7 @@ int readFile(char *dir,char *type){
    
 	return 0;
 }
-/*int appendToFile(char *dir,int index){
-		FILE *file = fopen(dir,"a");
 
-		if(file == NULL){
-			printf("DEBUG: File Not Found Creating one\n");
-			return 0;
-		}
-		else
-			{
-				printf("hey");
-				fprintf(file,"%s:%ld\n",g_courses[index].registrations[0].studentID,g_courses[index].registrations[0].timestamp);
-			}
-			
-		fclose(file);
-	
-	
-}*/
 int writeToFile(char *type, Course *dir,int index){
 
 		int i, j;
@@ -106,10 +90,10 @@ int writeToFile(char *type, Course *dir,int index){
 				printf("Ready to append to file");
 				for (i = 0; i < courseNum; i++){
 					int size = getSizeOfReg(i);
-					printf("%d\n", i);
+					printf("%d\n", size);
 					for (j = 0; j < size; j++){
 						file = fopen(dir[i].code, type);
-						
+						fprintf(file,"%s:%ld\n",dir[i].registrations[j].studentID, dir[i].registrations[j].timestamp);
 						printf("%s:%ld\n",dir[i].registrations[j].studentID, dir[i].registrations[j].timestamp);
 					}
 				}
